@@ -1,0 +1,39 @@
+name: Alerta de Preço do Bitcoin
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+
+permissions:
+  issues: write
+
+jobs:
+  bitcoin-alert:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Instalar Dep
+        run: sudo apt-get update && sudo apt-get install -y jq bc
+
+      - name: Rodar script de Alerta
+        id: bitcoin_alert
+        run: |
+          chmod +x ./bitcoin_alert.sh
+          ./bitcoin_alert.sh 550000
+        continue-on-error: true
+
+      - name: Criar Issue se Alerta for Acionado
+        if: steps.bitcoin_alert.outcome == 'failure'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: '⚠️ Bitcoin abaixo de 550000 BRL!',
+              body: `O preço do Bitcoin caiu abaixo do limite de R$550.000.\n\nVerifique o [CoinMarketCap](https://coinmarketcap.com/currencies/bitcoin/) para mais detalhes.`
+            })
+            

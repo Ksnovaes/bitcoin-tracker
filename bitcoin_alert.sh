@@ -7,6 +7,8 @@ echo "Preço atual do Bitcoin: $value"
 
 if [ $(echo "$value < $VALOR_ATUALIZADO" | bc) -eq 1 ]; then
     echo "Alerta: Valor do Bitcoin caiu abaixo de $VALOR_ATUALIZADO"
+    exit 2
 else
     echo "O valor do Bitcoin está acima de $VALOR_ATUALIZADO"
+    exit 0
 fi
