@@ -42,6 +42,6 @@ jobs:
         run: |
           curl -H "Content-Type: application/json" \
           -X POST \
-          -d "{\"content\": \":warning: Alerta: O preço do Bitcoin caiu abaixo de R\\$550000.00!\nValor Atual: R\\$${{ env.value }} no horário ${{ env.datetime }}.\nVerifique o CoinMarketCap para mais detalhes: https://coinmarketcap.com/currencies/bitcoin/\"}" \
+          -d "{\"content\":\":warning: Alerta! O preço do bitcoin ficou abaixo de R\\$550,000!\nValor Atual: R\\$${{ env.value }} no horário ${{ env.datetime }}.\nMais detalhes no CoinMarketCap: https://coinmarketcap.com/currencies/bitcoin/\"}" \
           ${{ secrets.DISCORD_WEBHOOK_URL }}
             
