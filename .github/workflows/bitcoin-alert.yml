@@ -3,6 +3,7 @@ name: Alerta de Preço do Bitcoin
 on:
   schedule:
     - cron: '*/5 * * * *'
+  workflow_dispatch:
 
 permissions:
   issues: write
