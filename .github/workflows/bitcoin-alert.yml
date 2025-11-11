@@ -37,4 +37,11 @@ jobs:
               title: '⚠️ Bitcoin abaixo de 550000 BRL!',
               body: `O preço do Bitcoin caiu abaixo do limite de R$550.000.\n\nVerifique o [CoinMarketCap](https://coinmarketcap.com/currencies/bitcoin/) para mais detalhes.\n\nValor Atual: R$${{ env.value }} no horário ${{ env.datetime }}`
             })
+      - name: Enviar alertar ao Discord
+        if: steps.bitcoin_alert.outcome == 'failure'
+        run: |
+          curl -H "Content-Type: application/json" \
+          -X POST \
+          -d "{\"content\": \":warning: Alerta: O preço do Bitcoin caiu abaixo de R$550.000! Valor Atual: R$${{ env.value }} no horário ${{ env.datetime }}. Verifique o CoinMarketCap para mais detalhes: https://coinmarketcap.com/currencies/bitcoin/\"}" \
+          ${{ secrets.DISCORD_WEBHOOK_URL }}
             
